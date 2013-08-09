@@ -1,0 +1,7 @@
+The syntax of the commands are:
+dimension <d>
+addNode(<nodeCoordinates>)
+removeNode(<nodeCoordinates>)
+insertItem(<nodeCoordinates>, <itemName>)
+deleteItem(<nodeCoordinates>, <itemName>)
+find(<nodeCoordinates>, <itemName>)
