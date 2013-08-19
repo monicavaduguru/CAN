@@ -1,3 +1,5 @@
+//This module is responsible for converting the item name into a set of coordinates using a hash functiondepending 
+//on the dimensions
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -25,7 +27,7 @@ stringtocart(char *input,int d) {
 
 
     // if the string is null return null
-    // if the dimentions are zero return null
+    // if the dimensions are zero return null
 
     if((input == NULL) || (d <= 0)) {
         printf("No string found or dimensions are invalid");
