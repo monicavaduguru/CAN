@@ -18,6 +18,7 @@ float min_c,max_c;
 int min_cart,min_dim;
 extern float cartesian[20];
 
+//creates a new table when the dimension is entered initially
 
 create_table() {
     int i,j;
@@ -26,12 +27,15 @@ create_table() {
         ind[i].data = NULL;
     }
 }
+
+//adds the cartesian values and the zones of the node in the table when a new node is added
 add_table() {
     int i=0,j,k,min,max;
 
     while(ind[i].data) {
         i++;
     }
+    //when first node is added it owns the whole cartesian space
     if(i ==0) {
         ind[i].data = malloc(3*dimension*sizeof(float));
         for(j=0,k=0;j<3*dimension;k++) {
@@ -39,7 +43,10 @@ add_table() {
             ind[i].data[j++] = 0;
             ind[i].data[j++] = 1;
         }
-    } else {
+    } 
+    //when additional nodes are added it addes the cartesian points of the node and splits the zone and saves these zones
+    //in the table
+    else {
         find_split_1();
         ind[i].data = malloc(3*dimension*sizeof(float));
         for(j=0,k=0;j<3*dimension;k++) {
@@ -55,6 +62,7 @@ add_table() {
     }
     return i;
 }
+//creating a node name for each node added
 get_node_name() {
     int i;
     char c[10];
@@ -64,6 +72,7 @@ get_node_name() {
         strcat(node_name,c);
     }
 }
+//when a new node is added the existing zones need to be split depending on where the new node lies
 find_split_1()
 {
     int i=0,j=0;
@@ -168,6 +177,7 @@ find_split_1()
     }
 }
 
+//prints the table at any point
 print_ctable() {
     int i=0,j,k;
     while(1) {
@@ -183,6 +193,7 @@ print_ctable() {
     }
 }
 
+//used to parse the dimension input the user
 parse_dim(char *str) {
     char *s = " ";
     char *t ;
@@ -199,18 +210,23 @@ main() {
     int index,index1;
     int i;
     while(1) {
+        //get the string upto 200 characters
         fgets (str, 200, stdin);
+        //if string contains dimension call parse_dim
         if(strstr(str,"dimension") != NULL) {
             parse_dim(str);
             printf("\nDimension :%d ",dimension);
             str[0] = '\0';
-        }else if(strstr(str,"removeNode") != NULL) {
+        }
+        //if string contains removeNode call parse_str
+        else if(strstr(str,"removeNode") != NULL) {
             parse_str(str,0);
             printf("\nCommand:  Remove Node, Cartesians:");
             for (i=0;i<dimension;i++)
                 printf(" %f ", cart[i]);
             find_min_volume();
             str[0] = '\0';
+            //if string contains addNode call parse_str
         }else if(strstr(str,"addNode") != NULL) {
             parse_str(str,0);
             printf("\nCommand:  Add Node, Cartesians:");
@@ -221,7 +237,8 @@ main() {
             add_node(index);
             build_neighbour();
             str[0] = '\0';
-        }else if(strstr(str,"insertItem") != NULL) {
+        }//if string contains insertItem call parse_str
+        else if(strstr(str,"insertItem") != NULL) {
             parse_str(str,1);
             index = insert_item();
             printf("\nCommand:  Insert Item, Cartesians:");
@@ -230,7 +247,8 @@ main() {
             printf("Item :%s ",inp_str);
             add_hashentry(ind[index].data,cart,cartesian);
             str[0] = '\0';
-        }else if(strstr(str,"deleteItem") != NULL) {
+        }//if string contains deleteItem call parse_str
+        else if(strstr(str,"deleteItem") != NULL) {
             parse_str(str,1);
             index = insert_item();
             printf("\nCommand:  Delete Item, Cartesians:");
@@ -239,7 +257,8 @@ main() {
             printf("Item :%s ",inp_str);
             delete_hashentry(ind[index].data,cart,cartesian);
             str[0] = '\0';
-        }else if(strstr(str,"find") != NULL) {
+        }//if string contains find call parse_str
+        else if(strstr(str,"find") != NULL) {
             parse_str(str,1);
             printf("\nCommand: Find Item, Requesting node Cartesians:");
             for (i=0;i<dimension;i++)
@@ -250,7 +269,8 @@ main() {
             route(ind[index1].data,ind[index].data);
             find_hash_song(ind[index].data,cartesian);
             str[0] = '\0';
-        }else if(strstr(str,"print") != NULL) {
+        }//if string contains print call print_node and print_ctable
+        else if(strstr(str,"print") != NULL) {
             print_node();
             print_ctable();
         }else if(str[0] == '\0') {
@@ -261,7 +281,8 @@ main() {
         }
     }
 }
-
+//this is used to find the minimum volume of the neighbouring node to decide which neighbour will get the zone when a node
+//is deleted
 find_min_volume() {
     node *temp1=head;
     struct neigh *ni;
@@ -308,6 +329,8 @@ find_min_volume() {
     }
 }
 
+//when a delete node command is issued this function is used to delete this node from the table and reallocate its zone to
+//one of its neighbours
 remove_node(node *temp) {
     node *temp1=head;
     node *del_node;
