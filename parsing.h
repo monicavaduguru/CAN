@@ -1,3 +1,6 @@
+//this function is used to parse the inputs which are entered by the user in the form of the sample input provided to 
+//inputs for the program
+
 extern int dimension;
 extern float cart[20];
 extern char inp_str[200];
