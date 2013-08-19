@@ -1,5 +1,5 @@
-//this function is used to parse the inputs which are entered by the user in the form of the sample input provided to 
-//inputs for the program
+//this function is used to parse the inputs which are entered by the user whose syntax is specified in the sample input provided 
+//as inputs for the program
 
 extern int dimension;
 extern float cart[20];
